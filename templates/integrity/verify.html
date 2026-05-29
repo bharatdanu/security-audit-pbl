@@ -1,0 +1,42 @@
+{% extends 'integrity/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                Verify File Integrity
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="verifyFileInput" class="form-label">Upload file to verify</label>
+                        <input type="file" name="file" id="verifyFileInput" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Verify
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if new_hash %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    Verification Result
+                </div>
+                <div class="card-body">
+                    <p class="text-monospace"><strong>New Hash:</strong> {{ new_hash }}</p>
+
+                    {% if last_record %}
+                        <p class="text-monospace"><strong>Last Stored Hash:</strong> {{ last_record.hash_value }}</p>
+                        <p><strong>Last File:</strong> <a href="{{ last_record.file.url }}" target="_blank">{{ last_record.file.name }}</a></p>
+                        <p><strong>Last Uploaded At:</strong> {{ last_record.uploaded_at }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
